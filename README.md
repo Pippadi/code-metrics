@@ -1,3 +1,5 @@
 # code-metrics
-A python-based tool to get code metrics
-This project needs Python 3
+
+A python-based tool to get code metrics.
+
+This project needs Python 3 and matplotlib.
