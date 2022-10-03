@@ -1,15 +1,18 @@
 import sys
+import pathlib
 
 if len(sys.argv) < 1: # Checks if filename is omitted
     print("Must provide filename!")
-    exit() # Exits program
+    exit(1) # Exits program with error status (exit code 1)
+### Not tested on Windows
 
-filename = sys.argv[1] # First command line argument
+# First command line argument is assumed to be filename
+filename = sys.argv[1]
 
 fh = open(filename, "r")
 x = len(fh.readlines())
-print(x)
+print("Line Count:", x)
 fh.close()
-import pathlib
+
 file_extension = pathlib.Path(filename).suffix
-print("File Extension: ", file_extension)
+print("File Extension:", file_extension)
