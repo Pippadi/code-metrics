@@ -10,3 +10,6 @@ fh = open(filename, "r")
 x = len(fh.readlines())
 print(x)
 fh.close()
+import pathlib
+file_extension = pathlib.Path(filename).suffix
+print("File Extension: ", file_extension)
