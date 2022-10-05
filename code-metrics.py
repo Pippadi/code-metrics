@@ -4,40 +4,45 @@ from file_details import FileDetails
 
 USAGE = "code-metrics <filename>"
 
-def presentFileDetails(filepath):
+def iprint(indentLevel, *args, **kwargs):
+    print("|\t" * indentLevel, *args, **kwargs)
+
+def presentFileDetails(filepath, indent=0):
     details = FileDetails(filepath)
     mimetype = details.mimeType()
 
-    print("\n---", filepath, "---")
-    print("Type:", details.prettyType())
+    iprint(indent)
+    iprint(indent, "---", filepath, "---")
+    iprint(indent, "Type:", details.prettyType())
 
-    if "text" in mimetype:
-        print("Line count:", details.lineCount())
-        print("Character count:", details.characterCount())
+    if "text" in mimetype: # Checking whether file is text file or not
+        iprint(indent, "Line count:", details.lineCount())
+        iprint(indent, "Character count:", details.characterCount())
     else:
-        print("Byte count:", details.byteCount())
-    print()
+        iprint(indent, "Byte count:", details.byteCount())
+    iprint(indent)
 
-def presentDirectoryDetails(dirpath):
+def presentDirectoryDetails(dirpath, indent=0):
     contents = os.listdir(dirpath)
-    print("\n***", dirpath, "***")
-    print("Contains", len(contents), "items")
-    print()
+    iprint(indent, "\n***", dirpath, "***")
+    iprint(indent, "Contains", len(contents), "items")
+    iprint(indent)
     for objname in contents:
         if objname[0] != ".": # Ignore hidden files (those starting with '.')
-            presentObjectDetails(os.path.join(dirpath, objname))
+            # Recursively iprint details of directory contents
+            presentObjectDetails(os.path.join(dirpath, objname), indent + 1)
 
-def presentObjectDetails(path):
+def presentObjectDetails(path, indent=0):
     if os.path.isdir(path):
-        presentDirectoryDetails(path)
+        presentDirectoryDetails(path, indent)
     else:
-        presentFileDetails(path)
+        presentFileDetails(path, indent)
 
 if len(sys.argv) < 1: # Checks if filename is omitted
     print("Must provide file or directory path!")
     print(USAGE)
     exit(1) # Exits program with error status (exit code 1)
-### Not tested on Windows
+### Not tested on Windows ###
 
 # First command line argument is assumed to be
 # the object in question's path
