@@ -1,5 +1,5 @@
 import os
-import mimetypes
+import magic
 
 # A class to represent files, for which metrics can be accessed
 class FileDetails:
@@ -7,7 +7,8 @@ class FileDetails:
         self.path = path
 
         self.contents = ""
-        with open(self.path) as f:
+        mode = "r" if "text" in self.mimeType() else "rb"
+        with open(self.path, mode) as f:
             self.contents = f.read()
 
     def lineCount(self):
@@ -20,8 +21,14 @@ class FileDetails:
     def characterCount(self):
         return len(self.contents)
 
+    def byteCount(self):
+        return len(self.contents)
+
+    def prettyType(self):
+        return magic.from_file(self.path)
+
     def mimeType(self):
-        return mimetypes.guess_type(self.path)[0]
+        return magic.from_file(self.path, mime=True)
 
 if __name__ == "__main__":
     f = FileDetails("./main.py")

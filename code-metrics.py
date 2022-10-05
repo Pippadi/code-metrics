@@ -4,11 +4,34 @@ from file_details import FileDetails
 
 USAGE = "code-metrics <filename>"
 
-def presentFileDetails(file):
-    details = FileDetails(file)
-    print("MIME type:", file.mimeType())
-    print("Line count:", file.lineCount())
-    print("Character count:", file.characterCount())
+def presentFileDetails(filepath):
+    details = FileDetails(filepath)
+    mimetype = details.mimeType()
+
+    print("\n---", filepath, "---")
+    print("Type:", details.prettyType())
+
+    if "text" in mimetype:
+        print("Line count:", details.lineCount())
+        print("Character count:", details.characterCount())
+    else:
+        print("Byte count:", details.byteCount())
+    print()
+
+def presentDirectoryDetails(dirpath):
+    contents = os.listdir(dirpath)
+    print("\n***", dirpath, "***")
+    print("Contains", len(contents), "items")
+    print()
+    for objname in contents:
+        if objname[0] != ".": # Ignore hidden files (those starting with '.')
+            presentObjectDetails(os.path.join(dirpath, objname))
+
+def presentObjectDetails(path):
+    if os.path.isdir(path):
+        presentDirectoryDetails(path)
+    else:
+        presentFileDetails(path)
 
 if len(sys.argv) < 1: # Checks if filename is omitted
     print("Must provide file or directory path!")
@@ -20,5 +43,4 @@ if len(sys.argv) < 1: # Checks if filename is omitted
 # the object in question's path
 objpath = sys.argv[1]
 
-if os.is_file(objpath):
-    presentFileDetails(objpath)
+presentObjectDetails(objpath)

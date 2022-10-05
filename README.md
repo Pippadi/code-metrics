@@ -2,10 +2,15 @@
 
 A python-based tool to get code metrics.
 
-This project needs Python 3. It is still currently very early in its lifecycle.
+This project is still very early in its lifecycle.
 
-Find the details of a file with
+Find the details of a file or directory with
 
 ```
-python3 code_metrics.py <filename>
+python3 code_metrics.py <filename|dirname>
 ```
+
+## Dependencies
+
+- Python 3
+- [`python-magic`](https://pypi.org/project/python-magic/)
