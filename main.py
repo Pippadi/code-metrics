@@ -1,8 +1,11 @@
 import sys
 import pathlib
 
+USAGE = "code-metrics <filename|dirname>"
+
 if len(sys.argv) < 1: # Checks if filename is omitted
     print("Must provide filename!")
+    print(USAGE)
     exit(1) # Exits program with error status (exit code 1)
 ### Not tested on Windows
 
