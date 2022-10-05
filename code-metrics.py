@@ -4,8 +4,10 @@ from file_details import FileDetails
 
 USAGE = "code-metrics <filename>"
 
+# prints with indent string replicated indentLevel times
+# '|    ' is the indent string here
 def iprint(indentLevel, *args, **kwargs):
-    print("|\t" * indentLevel, *args, **kwargs)
+    print("|    " * indentLevel, *args, **kwargs)
 
 def presentFileDetails(filepath, indent=0):
     details = FileDetails(filepath)
@@ -24,7 +26,8 @@ def presentFileDetails(filepath, indent=0):
 
 def presentDirectoryDetails(dirpath, indent=0):
     contents = os.listdir(dirpath)
-    iprint(indent, "\n***", dirpath, "***")
+    iprint(indent)
+    iprint(indent, "***", dirpath, "***")
     iprint(indent, "Contains", len(contents), "items")
     iprint(indent)
     for objname in contents:
