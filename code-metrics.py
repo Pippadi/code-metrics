@@ -2,12 +2,13 @@ import sys
 import os
 from file_details import FileDetails
 
-USAGE = "code-metrics <filename>"
+USAGE = "code-metrics <filename|dirname>..."
+INDENT_STRING = "|    "
 
-# prints with indent string replicated indentLevel times
-# '|    ' is the indent string here
+# prints INDENT_STRING replicated indentLevel times
+# followed by the other arguments passed
 def iprint(indentLevel, *args, **kwargs):
-    print("|    " * indentLevel, *args, **kwargs)
+    print(INDENT_STRING * indentLevel, *args, **kwargs)
 
 def presentFileDetails(filepath, indent=0):
     details = FileDetails(filepath)
@@ -47,8 +48,9 @@ if len(sys.argv) < 1: # Checks if filename is omitted
     exit(1) # Exits program with error status (exit code 1)
 ### Not tested on Windows ###
 
-# First command line argument is assumed to be
-# the object in question's path
-objpath = sys.argv[1]
+# Command line arguments have the paths to each
+# object whose details are to be printed
+objpaths = sys.argv[1:]
 
-presentObjectDetails(objpath)
+for p in objpaths:
+    presentObjectDetails(p)

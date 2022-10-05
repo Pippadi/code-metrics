@@ -7,7 +7,7 @@ This project is still very early in its lifecycle.
 Find the details of a file or directory with
 
 ```
-python3 code_metrics.py <filename|dirname>
+python3 code_metrics.py <filename|dirname>...
 ```
 
 ## Dependencies
