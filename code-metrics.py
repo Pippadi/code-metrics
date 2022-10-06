@@ -8,21 +8,19 @@ INDENT_STRING = "|    "
 # prints INDENT_STRING replicated indentLevel times
 # followed by the other arguments passed
 def iprint(indentLevel, *args, **kwargs):
-    print(INDENT_STRING * indentLevel, *args, **kwargs)
+    print(INDENT_STRING * indentLevel, end="")
+    print(*args, **kwargs)
 
 def presentFileDetails(filepath, indent=0):
     details = FileDetails(filepath)
-    mimetype = details.mimeType()
 
     iprint(indent)
     iprint(indent, "---", filepath, "---")
     iprint(indent, "Type:", details.prettyType())
 
-    if "text" in mimetype: # Checking whether file is text file or not
+    if details.isText(): # Checking whether file is text file or not
         iprint(indent, "Line count:", details.lineCount())
-        iprint(indent, "Character count:", details.characterCount())
-    else:
-        iprint(indent, "Byte count:", details.byteCount())
+    iprint(indent, "Size:", details.prettySize())
     iprint(indent)
 
 def presentDirectoryDetails(dirpath, indent=0):

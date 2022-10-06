@@ -1,5 +1,8 @@
 import os
+import math
 import magic
+
+_SUFFIXES = ["B", "KiB", "MiB", "GiB", "TiB"]
 
 # A class to represent files, for which metrics can be accessed
 class FileDetails:
@@ -7,7 +10,7 @@ class FileDetails:
         self.path = path
 
         self.contents = ""
-        mode = "r" if "text" in self.mimeType() else "rb"
+        mode = "r" if self.isText() else "rb"
         with open(self.path, mode) as f:
             self.contents = f.read()
 
@@ -18,17 +21,21 @@ class FileDetails:
         # return self.contents.count(os.linesep)
         return self.contents.count(os.linesep)
 
-    def characterCount(self):
-        return len(self.contents)
-
     def byteCount(self):
         return len(self.contents)
+
+    def prettySize(self):
+        log1024 = math.floor(math.log(self.byteCount(), 1024))
+        return "%.2f %s" % (self.byteCount() / ((1024 ** log1024) if log1024 else 1.0), _SUFFIXES[log1024])
 
     def prettyType(self):
         return magic.from_file(self.path)
 
     def mimeType(self):
         return magic.from_file(self.path, mime=True)
+
+    def isText(self):
+        return "text" in self.mimeType()
 
 if __name__ == "__main__":
     f = FileDetails("./main.py")
