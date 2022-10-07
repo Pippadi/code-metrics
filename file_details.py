@@ -25,7 +25,7 @@ class FileDetails:
         return len(self.contents)
 
     def prettySize(self):
-        log1024 = math.floor(math.log(self.byteCount(), 1024))
+        log1024 = math.floor(math.log(self.byteCount(), 1024)) if self.byteCount() else 0
         return "%.2f %s" % (self.byteCount() / ((1024 ** log1024) if log1024 else 1.0), _SUFFIXES[log1024])
 
     def prettyType(self):
