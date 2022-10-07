@@ -14,3 +14,4 @@ python3 code_metrics.py <filename|dirname>...
 
 - Python 3
 - [`python-magic`](https://pypi.org/project/python-magic/)
+- [`matplotlib`](https://matplotlib.org/)
