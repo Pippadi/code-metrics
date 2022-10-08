@@ -69,6 +69,14 @@ Contains 10 items
 
 Keeping track of files can be difficult. We wanted to make the task a little easier by adding graphics to help visualize folder structure and file size.
 
+## How we collaborated
+
+In order to stay synchronized while working at different times, we chose to use the industry standard [`git`](https://git-scm.org) version control system.
+As we finished making our individual changes, we would commit and push our code to [GitHub](https://github.com/Pippadi/code-metrics), where we chose to host our repository.
+
+Additionally, we strove to keep our code clean and understandable, with some comments as well.
+How successful our efforts were in this regard is left to the evaluator.
+
 ## How it works
 
 The program gets the file/folder whose details are required from command line arguments given in `sys.argv`.
