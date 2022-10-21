@@ -63,7 +63,7 @@ match action:
     case "get":
         username = input("Username: ")
         password = input("Password: ")
-        if users.authorization(username, password):
+        if users.authorize(username, password):
             for p in args:
                 printObjectDetails(p)
         else:
@@ -80,13 +80,13 @@ match action:
             print("Password must be no more than 20 characters long.")
             password = input("Enter a password: ")
             print()
-        users.createuser(username, password)
+        users.create(username, password)
 
     case "delete-user":
         username = input("Username: ")
         password = input("Password: ")
-        if users.authorization(username, password):
-            users.deleteuser(username)
+        if users.authorize(username, password):
+            users.delete(username)
         else:
             print("Deletion failed.")
 

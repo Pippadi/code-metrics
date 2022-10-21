@@ -1,15 +1,15 @@
 import mysql.connector as cor
 
-# createuser creates a user in our database.
+# create creates a user in our database.
 # It takes username and password as arguments
 # It gives us no output
-def createuser(name,password):
+def create(name,password):
     sql = cor.connect(host="localhost", user="root", password="tablecloth", database="code_metrics")
     x = sql.cursor()
     x.execute("insert into users(name, password) values ('" + name +"','" + password + "')")
     sql.commit()
 
-def deleteuser(name):
+def delete(name):
     sql = cor.connect(host="localhost", user="root", password="tablecloth", database="code_metrics")
     u = sql.cursor()
     u.execute("delete from users where name='"+name+"'")
@@ -19,7 +19,7 @@ def deleteuser(name):
 # In other words, it tells us whether or not the user is registered/created
 # It gives us a boolean output
 # True if the user exists, False if not.
-def authorization(name,password):
+def authorize(name,password):
     sql = cor.connect(host="localhost", user="root", password="tablecloth", database="code_metrics")
     x = sql.cursor()
     x.execute(
@@ -33,7 +33,7 @@ def authorization(name,password):
 
 ### For testing only ###
 if __name__ == "__main__":
-    createuser(name="Archie",password="Anime")
-    print(authorization(name="Archie",password="Anime"))
-    deleteuser(name="Archie")
-    print(authorization(name="Archie",password="Anime"))
+    create(name="Archie",password="Anime")
+    print(authorize(name="Archie",password="Anime"))
+    delete(name="Archie")
+    print(authorize(name="Archie",password="Anime"))
