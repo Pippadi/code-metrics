@@ -2,8 +2,12 @@ import sys
 import os
 from file_details import FileDetails
 import graphing
+import users
 
-USAGE = "code-metrics <filename|dirname>..."
+USAGE = """code-metrics <ACTION> [ARGS]...
+    get <filename|dirname>...
+    create-user
+    delete-user"""
 INDENT_STRING = "|    "
 
 # prints INDENT_STRING replicated indentLevel times
@@ -19,7 +23,7 @@ def printFileDetails(filepath, indent=0):
     iprint(indent, "---", filepath, "---")
     iprint(indent, "Type:", details.prettyType())
 
-    if details.isText(): # Checking whether file is text file or not
+    if details.isText():
         iprint(indent, "Line count:", details.lineCount())
     iprint(indent, "Size:", details.prettySize())
     iprint(indent)
@@ -43,7 +47,7 @@ def printObjectDetails(path, indent=0):
     else:
         printFileDetails(path, indent)
 
-if len(sys.argv) < 1: # Checks if filename is omitted
+if len(sys.argv) == 1: # Checks if filename is omitted
     print("Must provide file or directory path!")
     print(USAGE)
     exit(1) # Exits program with error status (exit code 1)
@@ -51,7 +55,40 @@ if len(sys.argv) < 1: # Checks if filename is omitted
 
 # Command line arguments have the paths to each
 # object whose details are to be printed
-objpaths = sys.argv[1:]
 
-for p in objpaths:
-    printObjectDetails(p)
+action = sys.argv[1]
+args = sys.argv[2:]
+
+match action:
+    case "get":
+        username = input("Username: ")
+        password = input("Password: ")
+        if users.authorization(username, password):
+            for p in args:
+                printObjectDetails(p)
+        else:
+            print("Authentication failed.")
+
+    case "create-user":
+        username = ""
+        password = None
+        while username == "" or len(username) > 20:
+            print("Username must be at least 1 character long, but no more than 20.")
+            username = input("Enter a username: ")
+            print()
+        while password == None or len(password) > 20:
+            print("Password must be no more than 20 characters long.")
+            password = input("Enter a password: ")
+            print()
+        users.createuser(username, password)
+
+    case "delete-user":
+        username = input("Username: ")
+        password = input("Password: ")
+        if users.authorization(username, password):
+            users.deleteuser(username)
+        else:
+            print("Deletion failed.")
+
+    case other:
+        print(USAGE)
