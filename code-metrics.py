@@ -7,7 +7,8 @@ import users
 USAGE = """code-metrics <ACTION> [ARGS]...
     get <filename|dirname>...
     create-user
-    delete-user"""
+    delete-user
+    list-users"""
 INDENT_STRING = "|    "
 
 # prints INDENT_STRING replicated indentLevel times
@@ -32,7 +33,7 @@ def printDirectoryDetails(dirpath, indent=0):
     contents = os.listdir(dirpath)
     iprint(indent)
     iprint(indent, "***", dirpath, "***")
-    iprint(indent, "Contains", len(contents), "items")
+    iprint(indent, "Contains", len(contents), "item" if len(contents) == 0 else "items")
     iprint(indent)
     for objname in contents:
         if objname[0] != ".": # Ignore hidden files (those starting with '.')
@@ -89,6 +90,10 @@ match action:
             users.delete(username)
         else:
             print("Deletion failed.")
+
+    case "list-users":
+        for name in users.list():
+            print(name)
 
     case other:
         print(USAGE)

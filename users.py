@@ -31,6 +31,16 @@ def authorize(name,password):
     )
     return bool(x.fetchone()[0])
 
+def list():
+    sql = cor.connect(host="localhost", user="root", password="tablecloth", database="code_metrics")
+    x = sql.cursor()
+    x.execute('SELECT name FROM users')
+    tuples = x.fetchall()
+    l = []
+    for t in tuples:
+        l.append(t[0])
+    return l
+
 ### For testing only ###
 if __name__ == "__main__":
     create(name="Archie",password="Anime")
