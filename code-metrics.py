@@ -3,6 +3,7 @@ import os
 from file_details import FileDetails
 import graphing
 import users
+import config
 
 USAGE = """code-metrics <ACTION> [ARGS]...
     get <filename|dirname>...
@@ -10,6 +11,7 @@ USAGE = """code-metrics <ACTION> [ARGS]...
     delete-user
     list-users"""
 INDENT_STRING = "|    "
+CONFIG_PATH = os.path.expanduser("~/.code-metrics-rc")
 
 # prints INDENT_STRING replicated indentLevel times
 # followed by the other arguments passed
@@ -48,23 +50,27 @@ def printObjectDetails(path, indent=0):
     else:
         printFileDetails(path, indent)
 
-if len(sys.argv) == 1: # Checks if filename is omitted
-    print("Must provide file or directory path!")
+if len(sys.argv) == 1: # Checks if action is omitted
+    print("Must provide action!")
     print(USAGE)
     exit(1) # Exits program with error status (exit code 1)
-### Not tested on Windows ###
 
-# Command line arguments have the paths to each
-# object whose details are to be printed
+if not config.exists_at(CONFIG_PATH):
+    config.persist_to_file(config.read_from_user(), CONFIG_PATH)
 
+cfg = config.read_from_file(CONFIG_PATH)
+
+# The first command line argument
 action = sys.argv[1]
+
+# Optional arguments for the action
 args = sys.argv[2:]
 
 match action:
     case "get":
         username = input("Username: ")
         password = input("Password: ")
-        if users.authorize(username, password):
+        if users.authorize(username, password, cfg):
             for p in args:
                 printObjectDetails(p)
         else:
@@ -81,19 +87,22 @@ match action:
             print("Password must be no more than 20 characters long.")
             password = input("Enter a password: ")
             print()
-        users.create(username, password)
+        users.create(username, password, cfg)
 
     case "delete-user":
         username = input("Username: ")
         password = input("Password: ")
-        if users.authorize(username, password):
-            users.delete(username)
+        if users.authorize(username, password, cfg):
+            users.delete(username, cfg)
         else:
             print("Deletion failed.")
 
     case "list-users":
-        for name in users.list():
+        for name in users.list(cfg):
             print(name)
+
+    case "reconfigure":
+        config.persist_to_file(config.read_from_user(), CONFIG_PATH)
 
     case other:
         print(USAGE)
