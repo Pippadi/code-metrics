@@ -18,4 +18,5 @@ def read_from_user():
     cfg["host"] = input("Database host: ")
     cfg["user"] = input("Database user: ")
     cfg["passwd"] = input("Database password: ")
+    print()
     return cfg

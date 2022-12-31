@@ -66,43 +66,42 @@ action = sys.argv[1]
 # Optional arguments for the action
 args = sys.argv[2:]
 
-match action:
-    case "get":
-        username = input("Username: ")
-        password = input("Password: ")
-        if users.authorize(username, password, cfg):
-            for p in args:
-                printObjectDetails(p)
-        else:
-            print("Authentication failed.")
+if action == "get":
+    username = input("Username: ")
+    password = input("Password: ")
+    if users.authorize(username, password, cfg):
+        for p in args:
+            printObjectDetails(p)
+    else:
+        print("Authentication failed.")
 
-    case "create-user":
-        username = ""
-        password = None
-        while username == "" or len(username) > 20:
-            print("Username must be at least 1 character long, but no more than 20.")
-            username = input("Enter a username: ")
-            print()
-        while password == None or len(password) > 20:
-            print("Password must be no more than 20 characters long.")
-            password = input("Enter a password: ")
-            print()
-        users.create(username, password, cfg)
+elif action == "create-user":
+    username = ""
+    password = None
+    while username == "" or len(username) > 20:
+        print("Username must be at least 1 character long, but no more than 20.")
+        username = input("Enter a username: ")
+        print()
+    while password == None or len(password) > 20:
+        print("Password must be no more than 20 characters long.")
+        password = input("Enter a password: ")
+        print()
+    users.create(username, password, cfg)
 
-    case "delete-user":
-        username = input("Username: ")
-        password = input("Password: ")
-        if users.authorize(username, password, cfg):
-            users.delete(username, cfg)
-        else:
-            print("Deletion failed.")
+elif action == "delete-user":
+    username = input("Username: ")
+    password = input("Password: ")
+    if users.authorize(username, password, cfg):
+        users.delete(username, cfg)
+    else:
+        print("Deletion failed.")
 
-    case "list-users":
-        for name in users.list(cfg):
-            print(name)
+elif action == "list-users":
+    for name in users.list(cfg):
+        print(name)
 
-    case "reconfigure":
-        config.persist_to_file(config.read_from_user(), CONFIG_PATH)
+elif action == "reconfigure":
+    config.persist_to_file(config.read_from_user(), CONFIG_PATH)
 
-    case other:
-        print(USAGE)
+else:
+    print(USAGE)
